@@ -1,0 +1,5 @@
+mkdir -p /root/.ssh
+
+echo {custom-ssh-key} >> /root/.ssh/authorized_keys
+
+chmod -R go= /root/.ssh

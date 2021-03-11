@@ -1,0 +1,21 @@
+sleep 60
+echo nameserver 8.8.8.8 > /etc/resolv.conf
+
+apt-get update -y
+
+apt install curl -y
+
+curl --location --request PUT '{site_url}/api/v2/sps/{device_id}/script-status' --header 'X-API-KEY: {script_token}' --header 'Content-Type: application/json' -d '{
+    "scriptStatus": "Started"
+}'
+
+# Install cloud-init and pull down our config
+apt install cloud-init -y
+
+wget http://scripts.hivelocity.net/harden/sps/ubuntu_cloud.cfg -O /etc/cloud/cloud.cfg
+
+wget {script_path} -O /etc/cloud/cloud.cfg.d/user_data.cfg
+
+curl --location --request PUT '{site_url}/api/v2/sps/{device_id}/script-status' --header 'X-API-KEY: {script_token}' --header 'Content-Type: application/json' -d '{
+    "scriptStatus": "Finished"
+}'

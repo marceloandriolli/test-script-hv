@@ -1,0 +1,20 @@
+sleep 60
+echo nameserver 8.8.8.8 > /etc/resolv.conf
+
+yum update -y
+
+yum install wget -y 
+
+yum install python3 -y 
+
+pip3 install requests
+
+mkdir /opt/hv_script
+
+wget {script_path} -O /opt/hv_script/script.sh
+
+wget http://scripts.hivelocity.net/harden/sps/script_runner.py -O /opt/hv_script/script_runner.py
+
+python3 /opt/hv_script/script_runner.py -u {site_url} -s /opt/hv_script/script.sh -t {script_token} -d {device_id}
+
+rm -Rf  /opt/hv_script/

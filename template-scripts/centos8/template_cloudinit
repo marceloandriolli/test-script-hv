@@ -1,0 +1,25 @@
+sleep 60
+echo nameserver 8.8.8.8 > /etc/resolv.conf
+
+yum install curl -y
+
+curl --location --request PUT '{site_url}/api/v2/sps/{device_id}/script-status' --header 'X-API-KEY: {script_token}' --header 'Content-Type: application/json' -d '{
+    "scriptStatus": "Started"
+}'
+
+yum install cloud-init -y
+
+cloud-init clean
+
+wget http://scripts.hivelocity.net/harden/sps/centos_cloud.cfg -O /etc/cloud/cloud.cfg
+
+wget {script_path} -O /etc/cloud/cloud.cfg.d/user-data.cfg
+
+cloud-init modules --mode config
+cloud-init modules --mode final
+
+systemctl restart sshd
+
+curl --location --request PUT '{site_url}/api/v2/sps/{device_id}/script-status' --header 'X-API-KEY: {script_token}' --header 'Content-Type: application/json' -d '{
+    "scriptStatus": "Finished"
+}'

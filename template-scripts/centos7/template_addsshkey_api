@@ -1,0 +1,15 @@
+yum install curl -y
+
+curl --location --request PUT '{site_url}/api/v2/sps/{device_id}/script-status' --header 'X-API-KEY: {script_token}' --header 'Content-Type: application/json' -d '{
+    "scriptStatus": "Started"
+}'
+
+mkdir -p /root/.ssh
+
+echo {custom-ssh-key} >> /root/.ssh/authorized_keys
+
+chmod -R go= /root/.ssh
+
+curl --location --request PUT '{site_url}/api/v2/sps/{device_id}/script-status' --header 'X-API-KEY: {script_token}' --header 'Content-Type: application/json' -d '{
+    "scriptStatus": "Finished"
+}'

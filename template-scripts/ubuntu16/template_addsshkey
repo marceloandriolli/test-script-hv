@@ -1,0 +1,5 @@
+mkdir -p /home/ubuntu/.ssh
+
+echo {custom-ssh-key} >> /home/ubuntu/.ssh/authorized_keys
+
+chown -R ubuntu:ubuntu /home/ubuntu/.ssh/
